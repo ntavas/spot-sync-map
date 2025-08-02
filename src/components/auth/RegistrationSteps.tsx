@@ -99,37 +99,6 @@ export const RegistrationSteps = ({ onRegister, onSwitchToLogin }: RegistrationS
           <Progress value={progress} className="h-2" />
         </div>
 
-        {/* Breadcrumbs */}
-        <div className="flex items-center justify-center">
-          {stepTitles.map((title, index) => (
-            <div key={index + 1} className="flex items-center">
-              {/* Line before dot (except for first) */}
-              {index > 0 && (
-                <div 
-                  className={`h-px w-8 ${
-                    index + 1 <= currentStep ? 'bg-primary' : 'bg-muted'
-                  }`} 
-                />
-              )}
-              
-              {/* Dot */}
-              <div
-                className={`w-2 h-2 rounded-full mx-2 ${
-                  index + 1 <= currentStep ? 'bg-primary' : 'bg-muted'
-                }`}
-              />
-              
-              {/* Line after dot (except for last) */}
-              {index < stepTitles.length - 1 && (
-                <div 
-                  className={`h-px w-8 ${
-                    index + 1 < currentStep ? 'bg-primary' : 'bg-muted'
-                  }`} 
-                />
-              )}
-            </div>
-          ))}
-        </div>
       </CardHeader>
 
       <CardContent className="space-y-4">
