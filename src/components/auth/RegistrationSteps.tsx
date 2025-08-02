@@ -100,25 +100,33 @@ export const RegistrationSteps = ({ onRegister, onSwitchToLogin }: RegistrationS
         </div>
 
         {/* Breadcrumbs */}
-        <div className="flex justify-between">
+        <div className="flex items-center justify-center">
           {stepTitles.map((title, index) => (
-            <div
-              key={index + 1}
-              className={`flex items-center space-x-1 text-xs ${
-                index + 1 <= currentStep ? 'text-primary' : 'text-muted-foreground'
-              }`}
-            >
+            <div key={index + 1} className="flex items-center">
+              {/* Line before dot (except for first) */}
+              {index > 0 && (
+                <div 
+                  className={`h-px w-8 ${
+                    index + 1 <= currentStep ? 'bg-primary' : 'bg-muted'
+                  }`} 
+                />
+              )}
+              
+              {/* Dot */}
               <div
-                className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-medium ${
-                  index + 1 < currentStep
-                    ? 'bg-primary text-primary-foreground'
-                    : index + 1 === currentStep
-                    ? 'bg-primary text-primary-foreground'
-                    : 'bg-muted text-muted-foreground'
+                className={`w-2 h-2 rounded-full mx-2 ${
+                  index + 1 <= currentStep ? 'bg-primary' : 'bg-muted'
                 }`}
-              >
-                {index + 1}
-              </div>
+              />
+              
+              {/* Line after dot (except for last) */}
+              {index < stepTitles.length - 1 && (
+                <div 
+                  className={`h-px w-8 ${
+                    index + 1 < currentStep ? 'bg-primary' : 'bg-muted'
+                  }`} 
+                />
+              )}
             </div>
           ))}
         </div>
