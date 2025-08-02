@@ -59,10 +59,14 @@ export const ParkingMap = ({ city, darkMode = false }: ParkingMapProps) => {
     // Add tile layer with dark mode support
     const tileUrl = darkMode 
       ? 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png'
-      : 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png';
+      : 'https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png';
+
+    const attribution = darkMode 
+      ? '© OpenStreetMap contributors, © CartoDB'
+      : '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Tiles style by <a href="https://www.hotosm.org/" target="_blank">Humanitarian OpenStreetMap Team</a>';
 
     L.tileLayer(tileUrl, {
-      attribution: '© OpenStreetMap contributors, © CartoDB',
+      attribution: attribution,
       maxZoom: 19,
     }).addTo(map);
 
@@ -190,36 +194,35 @@ export const ParkingMap = ({ city, darkMode = false }: ParkingMapProps) => {
     <div className="relative w-full h-full">
       <div 
         ref={mapRef} 
-        className="w-full h-full rounded-lg overflow-hidden"
-        style={{ minHeight: '500px' }}
+        className="w-full h-full"
       />
       
       {/* Legend */}
-      <div className="absolute top-4 right-4 bg-card/95 backdrop-blur-sm border rounded-lg p-3 shadow-elegant">
+      <div className="absolute top-4 right-4 bg-background/95 backdrop-blur-sm border rounded-lg p-3 shadow-elegant z-[1000]">
         <h4 className="font-medium text-sm mb-2">Parking Status</h4>
         <div className="space-y-2">
           <div className="flex items-center space-x-2 text-sm">
-            <div className="w-3 h-3 rounded-full bg-success"></div>
+            <div className="w-3 h-3 rounded-full bg-green-500"></div>
             <span>Available</span>
           </div>
           <div className="flex items-center space-x-2 text-sm">
-            <div className="w-3 h-3 rounded-full bg-destructive"></div>
+            <div className="w-3 h-3 rounded-full bg-red-500"></div>
             <span>Occupied</span>
           </div>
         </div>
       </div>
 
       {/* Stats */}
-      <div className="absolute bottom-4 left-4 bg-card/95 backdrop-blur-sm border rounded-lg p-3 shadow-elegant">
+      <div className="absolute bottom-4 left-4 bg-background/95 backdrop-blur-sm border rounded-lg p-3 shadow-elegant z-[1000]">
         <div className="flex space-x-4 text-sm">
           <div className="text-center">
-            <div className="font-medium text-success">
+            <div className="font-medium text-green-600 dark:text-green-400">
               {parkingSpots.filter(spot => spot.status === 'available').length}
             </div>
             <div className="text-muted-foreground">Available</div>
           </div>
           <div className="text-center">
-            <div className="font-medium text-destructive">
+            <div className="font-medium text-red-600 dark:text-red-400">
               {parkingSpots.filter(spot => spot.status === 'occupied').length}
             </div>
             <div className="text-muted-foreground">Occupied</div>

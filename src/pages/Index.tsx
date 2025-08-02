@@ -11,6 +11,7 @@ interface User {
   email: string;
   location: string;
   phone: string;
+  photo?: string;
 }
 
 interface RegistrationData {
@@ -21,6 +22,7 @@ interface RegistrationData {
   countryCode: string;
   phoneNumber: string;
   location: string;
+  photo?: string;
 }
 
 const Index = () => {
@@ -51,7 +53,8 @@ const Index = () => {
       lastName: "User", 
       email: email,
       location: "Athens",
-      phone: "+30 123 456 7890"
+      phone: "+30 123 456 7890",
+      photo: undefined
     };
     
     setUser(mockUser);
@@ -69,7 +72,8 @@ const Index = () => {
       lastName: data.lastName,
       email: data.email,
       location: data.location,
-      phone: `${data.countryCode} ${data.phoneNumber}`
+      phone: `${data.countryCode} ${data.phoneNumber}`,
+      photo: data.photo
     };
     
     setUser(newUser);
@@ -114,10 +118,8 @@ const Index = () => {
           darkMode={darkMode}
           onToggleDarkMode={toggleDarkMode}
         />
-        <main className="container mx-auto px-4 py-6">
-          <div className="h-[calc(100vh-140px)]">
-            <ParkingMap city={currentCity} darkMode={darkMode} />
-          </div>
+        <main className="h-[90vh]">
+          <ParkingMap city={currentCity} darkMode={darkMode} />
         </main>
       </div>
     );

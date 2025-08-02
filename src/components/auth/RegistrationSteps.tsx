@@ -5,7 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { Mail, Lock, User, Phone, MapPin, Eye, EyeOff } from "lucide-react";
+import { Mail, Lock, User, Phone, MapPin, Eye, EyeOff, Camera, Upload } from "lucide-react";
 
 interface RegistrationData {
   email: string;
@@ -15,6 +15,7 @@ interface RegistrationData {
   countryCode: string;
   phoneNumber: string;
   location: string;
+  photo?: string;
 }
 
 interface RegistrationStepsProps {
@@ -43,9 +44,10 @@ export const RegistrationSteps = ({ onRegister, onSwitchToLogin }: RegistrationS
     countryCode: "+30",
     phoneNumber: "",
     location: "",
+    photo: undefined,
   });
 
-  const totalSteps = 4;
+  const totalSteps = 5;
   const progress = (currentStep / totalSteps) * 100;
 
   const nextStep = () => {
@@ -72,14 +74,16 @@ export const RegistrationSteps = ({ onRegister, onSwitchToLogin }: RegistrationS
     "Account Setup",
     "Personal Information", 
     "Contact Details",
-    "Location Preference"
+    "Location Preference",
+    "Profile Picture"
   ];
 
   const stepDescriptions = [
     "Create your account credentials",
     "Tell us about yourself",
     "How can we reach you?",
-    "Choose your city"
+    "Choose your city",
+    "Add your profile picture"
   ];
 
   return (
@@ -252,6 +256,63 @@ export const RegistrationSteps = ({ onRegister, onSwitchToLogin }: RegistrationS
                 </Select>
               </div>
             </div>
+          </div>
+        )}
+
+        {/* Step 5: Photo */}
+        {currentStep === 5 && (
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label htmlFor="photo">Profile Picture</Label>
+              <div className="flex flex-col items-center space-y-4">
+                {formData.photo ? (
+                  <img 
+                    src={formData.photo} 
+                    alt="Profile" 
+                    className="w-24 h-24 rounded-full object-cover border-2 border-primary/20"
+                  />
+                ) : (
+                  <div className="w-24 h-24 rounded-full bg-muted/50 border-2 border-dashed border-muted-foreground/30 flex items-center justify-center">
+                    <Camera className="h-8 w-8 text-muted-foreground" />
+                  </div>
+                )}
+                
+                <div className="flex space-x-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      const input = document.createElement('input');
+                      input.type = 'file';
+                      input.accept = 'image/*';
+                      input.onchange = (e) => {
+                        const file = (e.target as HTMLInputElement).files?.[0];
+                        if (file) {
+                          const reader = new FileReader();
+                          reader.onload = (e) => {
+                            updateFormData('photo', e.target?.result as string);
+                          };
+                          reader.readAsDataURL(file);
+                        }
+                      };
+                      input.click();
+                    }}
+                  >
+                    <Upload className="h-4 w-4 mr-2" />
+                    Upload Photo
+                  </Button>
+                  
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => updateFormData('photo', '')}
+                  >
+                    Skip for now
+                  </Button>
+                </div>
+              </div>
+            </div>
+            
             <div className="rounded-lg bg-muted/50 p-4">
               <h4 className="font-medium text-sm mb-2">Registration Summary</h4>
               <div className="space-y-1 text-sm text-muted-foreground">
@@ -259,6 +320,7 @@ export const RegistrationSteps = ({ onRegister, onSwitchToLogin }: RegistrationS
                 <p>Name: {formData.firstName} {formData.lastName}</p>
                 <p>Phone: {formData.countryCode} {formData.phoneNumber}</p>
                 <p>Location: {formData.location}</p>
+                <p>Photo: {formData.photo ? 'Added' : 'Not provided'}</p>
               </div>
             </div>
           </div>
